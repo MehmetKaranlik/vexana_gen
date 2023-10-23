@@ -44,13 +44,9 @@ class ParentGen {
     buffer.writeln(
         '  ${className.removeStar.removeQuestionMark} fromJson(Map<String, dynamic> json) {');
     buffer.writeln('    return $className(');
-    for (final field in entries.values) {
-      final normalDeclaration =
-          'json[\'${field.element.name}\'] as ${field.type}';
-      final declaration = field.isVexanaClass
-          ? '_${field.type.removeQuestionMark.removeStar}Impl.fromJson(json[\'${field.element.name}\'] as Map<String, dynamic>)'
-          : normalDeclaration;
-      buffer.writeln('${field.element.name}:$declaration,');
+    for (final entry in entries.values) {
+      buffer.writeln(
+          '${entry.element.name}:${_fromJsonFieldDeclaration(entry)},');
     }
     buffer.writeln(');');
     buffer.writeln('}\n');
@@ -69,5 +65,17 @@ class ParentGen {
 
   void _genClassEnd() {
     buffer.writeln('} \n');
+  }
+
+  String _fromJsonFieldDeclaration(VisitEntry entry) {
+    final nullCheckDec = "json['${entry.element.name}'] == null ? null :";
+    final normalDeclaration = "json['${entry.element.name}'] as ${entry.type}";
+    final nestedClassDeclaration =
+        "_${entry.type.removeQuestionMark.removeStar}Impl.fromJson(json['${entry.element.name}'] as Map<String, dynamic>)";
+    return entry.isVexanaClass
+        ? entry.isNullable
+            ? '$nullCheckDec $nestedClassDeclaration'
+            : nestedClassDeclaration
+        : normalDeclaration;
   }
 }

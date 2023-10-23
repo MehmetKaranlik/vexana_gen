@@ -1,3 +1,5 @@
+import 'package:example/sub_sub_class.dart';
+import 'package:vexana/vexana.dart';
 import 'package:vexana_gen/vexana_gen.dart';
 part 'subclass.g.dart';
 
@@ -5,6 +7,11 @@ part 'subclass.g.dart';
 class SubClass extends _$SubClassSerialized {
   SubClass({
     this.name,
+    this.surname,
   });
+  @override
   final String? name;
+
+  @override
+  final String? surname;
 }

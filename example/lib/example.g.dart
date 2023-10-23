@@ -24,7 +24,9 @@ abstract class _$MainClassSerialized implements INetworkModel<MainClass> {
       name: json['name'] as String?,
       age: json['age'] as int?,
       score: json['score'] as double?,
-      mahmut: _SubClassImpl.fromJson(json['mahmut'] as Map<String, dynamic>),
+      mahmut: json['mahmut'] == null
+          ? null
+          : _SubClassImpl.fromJson(json['mahmut'] as Map<String, dynamic>),
     );
   }
 
@@ -42,6 +44,14 @@ abstract class _$MainClassSerialized implements INetworkModel<MainClass> {
 class _SubClassImpl {
   _SubClassImpl({
     this.name,
+    this.surname,
   });
   final String? name;
+  final String? surname;
+  static SubClass fromJson(Map<String, dynamic> json) {
+    return SubClass(
+      name: json['name'] as String?,
+      surname: json['surname'] as String?,
+    );
+  }
 }

@@ -1,0 +1,3 @@
+class VexanaKey {
+  const VexanaKey();
+}

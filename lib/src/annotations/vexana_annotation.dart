@@ -1,0 +1,3 @@
+class Vexana {
+  const Vexana();
+}

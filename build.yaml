@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      generators|annotations:
+        enabled: true
+
+builders:
+  generators:
+    import: "package:vexana_gen/src/builder.dart"
+    builder_factories: ["vexanaBuilder"]
+    build_extensions: { ".dart": ["vexana.g.dart"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

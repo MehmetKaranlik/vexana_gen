@@ -7,6 +7,8 @@ import 'package:vexana_gen/src/annotations/vexana_annotation.dart';
 import 'package:vexana_gen/src/generators/helpers/model_visitor.dart';
 import 'package:vexana_gen/src/generators/helpers/module_gen/impl_gen.dart';
 import 'package:vexana_gen/src/generators/helpers/module_gen/parent_gen.dart';
+import 'package:vexana_gen/src/utility/extensions/list_extension.dart';
+import 'package:vexana_gen/src/utility/extensions/string_extension.dart';
 
 class VexanaSerializableGenerator extends GeneratorForAnnotation<Vexana> {
   @override
@@ -15,22 +17,44 @@ class VexanaSerializableGenerator extends GeneratorForAnnotation<Vexana> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
+    final buffer = StringBuffer();
+    // VISIT
     final visitor = ModelVisitor();
     element.visitChildren(visitor);
 
-    final buffer = StringBuffer();
-
     // PARENT CLASS
-    final parentGen = ParentGen().generate(visitor.className, visitor.fields);
+    final parentGen =
+        ParentGen().generate(visitor.item.className, visitor.item.fields);
     buffer.writeln(parentGen);
 
-    // IMPL CLASSES
-    for (final field in visitor.fields.values) {
-      if (!field.isVexanaClass) continue;
-      final implGen = ImplGen(entry: field);
-      buffer.writeln(implGen.generate());
+    var entries = <VisitEntry>[];
+
+    // IMPL CLASSES (PARENT VALUES)
+    for (final entry in visitor.item.fields.values) {
+      if (!entry.isVexanaClass) continue;
+      _getEntries(entry, entries);
+    }
+
+    for (final item in entries.unique((element) => element.type)) {
+      final implGen = ImplGen(entry: item).generate();
+      buffer.writeln(implGen);
     }
 
     return buffer.toString();
+  }
+
+  void _getEntries(VisitEntry entry, List<VisitEntry> entries) {
+    entries.add(entry);
+    final elements = entry.getElements();
+    for (final item in elements) {
+      if (!item.isVexanaClass) continue;
+      if (entries.any(
+        (element) {
+          return element.type.removeQuestionMark.removeStar ==
+              item.type.removeQuestionMark.removeStar;
+        },
+      )) continue;
+      _getEntries(item, entries);
+    }
   }
 }

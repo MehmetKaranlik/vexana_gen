@@ -10,12 +10,11 @@ class ImplGen {
   String _className = "";
   Map<String, VisitEntry> _fields = {};
 
-  // TODO: This initalization should be RECURSIVE cuz all nested classes can also be vexana class
   void _init() {
     final visitor = ModelVisitor();
     entry.element.type.element?.visitChildren(visitor);
-    _className = visitor.className;
-    _fields = visitor.fields;
+    _className = visitor.item.className;
+    _fields = visitor.item.fields;
   }
 
   String generate() {
@@ -34,7 +33,8 @@ class ImplGen {
   void _genConstructor() {
     buffer.writeln("  _${_className}Impl({");
     for (final field in _fields.values) {
-      buffer.writeln("    this.${field.element.name},");
+      final dec = field.isNullable ? "" : "required";
+      buffer.writeln(" $dec   this.${field.element.name},");
     }
     buffer.writeln("  });");
   }

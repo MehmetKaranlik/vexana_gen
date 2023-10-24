@@ -1,53 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'example.dart';
+part of 'nested.dart';
 
 // **************************************************************************
 // VexanaSerializableGenerator
 // **************************************************************************
 
-mixin _$MainClassSerialized implements INetworkModel<MainClass> {
-  String? get name;
-  int? get age;
-  double get score;
-  SubClass get subClass;
+mixin _$NestedSerialized implements INetworkModel<Nested> {
+  SubSubClass? get id;
 
   @override
-  MainClass fromJson(Map<String, dynamic> json) {
-    return MainClass(
-      name: json['name'] as String?,
-      age: json['age'] as int?,
-      score: json['score'] as double,
-      subClass:
-          _SubClassImpl.fromJson(json['subClass'] as Map<String, dynamic>),
+  Nested fromJson(Map<String, dynamic> json) {
+    return Nested(
+      id: json['id'] == null
+          ? null
+          : _SubSubClassImpl.fromJson(json['id'] as Map<String, dynamic>),
     );
   }
 
   @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'name': name,
-      'age': age,
-      'score': score,
-      'subClass': subClass,
+      'id': id,
     };
-  }
-}
-
-class _SubClassImpl {
-  _SubClassImpl({
-    this.name,
-    this.surname,
-  });
-  final String? name;
-  final SubSubClass? surname;
-  static SubClass fromJson(Map<String, dynamic> json) {
-    return SubClass(
-      name: json['name'] as String?,
-      surname: json['surname'] == null
-          ? null
-          : _SubSubClassImpl.fromJson(json['surname'] as Map<String, dynamic>),
-    );
   }
 }
 

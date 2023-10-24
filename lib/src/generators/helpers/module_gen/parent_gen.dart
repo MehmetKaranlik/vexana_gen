@@ -8,7 +8,7 @@ class ParentGen {
 
   String generate(String className, Map<String, VisitEntry> entries) {
     _genClassName(className);
-    _genConstructor(className, entries);
+    // _genConstructor(className, entries);
     _genFields(entries);
     _genFromJson(className, entries);
     _genToJson(entries);
@@ -19,22 +19,12 @@ class ParentGen {
   void _genClassName(String className) {
     final stripped = className.removeStar;
     buffer.writeln(
-        'abstract class  _\$${stripped}Serialized implements INetworkModel<$stripped> { \n');
-  }
-
-  void _genConstructor(String className, Map<String, VisitEntry> entry) {
-    final stripped = className.removeStar;
-    buffer.writeln('  _\$${stripped}Serialized({');
-    for (final field in entry.values) {
-      final prefix = field.isNullable ? '' : 'required';
-      buffer.writeln('$prefix this.${field.element.name},');
-    }
-    buffer.writeln('  }) \n;');
+        'mixin  _\$${stripped}Serialized implements INetworkModel<$stripped> { \n');
   }
 
   void _genFields(Map<String, VisitEntry> entries) {
     for (final field in entries.values) {
-      buffer.writeln('  final  ${field.type} ${field.element.name};');
+      buffer.writeln('    ${field.type} get  ${field.element.name};');
     }
     buffer.writeln('\n');
   }

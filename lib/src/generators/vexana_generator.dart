@@ -8,7 +8,7 @@ import 'package:vexana_gen/src/generators/helpers/model_visitor.dart';
 import 'package:vexana_gen/src/generators/helpers/module_gen/impl_gen.dart';
 import 'package:vexana_gen/src/generators/helpers/module_gen/parent_gen.dart';
 import 'package:vexana_gen/src/utility/extensions/list_extension.dart';
-import 'package:vexana_gen/src/utility/extensions/string_extension.dart';
+import 'package:vexana_gen/src/utility/extensions/visit_entry_extension.dart';
 
 class VexanaSerializableGenerator extends GeneratorForAnnotation<Vexana> {
   @override
@@ -48,12 +48,7 @@ class VexanaSerializableGenerator extends GeneratorForAnnotation<Vexana> {
     final elements = entry.getElements();
     for (final item in elements) {
       if (!item.isVexanaClass) continue;
-      if (entries.any(
-        (element) {
-          return element.type.removeQuestionMark.removeStar ==
-              item.type.removeQuestionMark.removeStar;
-        },
-      )) continue;
+      if (entries.any((element) => element.isSameType(item))) continue;
       _getEntries(item, entries);
     }
   }

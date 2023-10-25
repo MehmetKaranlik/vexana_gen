@@ -19,7 +19,8 @@ class ParentGen {
   void _genClassName(String className) {
     final stripped = className.removeStar;
     buffer.writeln(
-        'mixin  _\$${stripped}Serialized implements INetworkModel<$stripped> { \n');
+      'mixin  _\$${stripped}Serialized implements INetworkModel<$stripped> { \n',
+    );
   }
 
   void _genFields(Map<String, VisitEntry> entries) {
@@ -33,7 +34,7 @@ class ParentGen {
     buffer.writeln('  @override');
     buffer.writeln(
         '  ${className.removeStar.removeQuestionMark} fromJson(Map<String, dynamic> json) {');
-    buffer.writeln('    return $className(');
+    buffer.writeln('return $className(');
     for (final entry in entries.values) {
       buffer.writeln(
           '${entry.element.name}:${_fromJsonFieldDeclaration(entry)},');
@@ -47,10 +48,16 @@ class ParentGen {
     buffer.writeln('  Map<String, dynamic> toJson() {');
     buffer.writeln('    return <String, dynamic>{');
     for (final field in entries.values) {
-      buffer.writeln('      \'${field.element.name}\': ${field.element.name},');
+      if (field.isVexanaClass) {
+        final nameSuffix = field.isNullable ? '?' : '';
+        buffer.writeln(
+            ' \'${field.element.name}\': ${field.element.name}$nameSuffix.toJson(), ');
+      } else {
+        buffer.writeln('\'${field.element.name}\': ${field.element.name},');
+      }
     }
-    buffer.writeln('    };');
-    buffer.writeln('  }\n');
+    buffer.writeln('};');
+    buffer.writeln('}\n');
   }
 
   void _genClassEnd() {

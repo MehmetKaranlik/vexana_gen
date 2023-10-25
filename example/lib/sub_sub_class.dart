@@ -5,7 +5,7 @@ import 'package:vexana_gen/vexana_gen.dart';
 part 'sub_sub_class.g.dart';
 
 @Vexana()
-class SubSubClass extends _$SubSubClassSerialized {
+class SubSubClass with _$SubSubClassSerialized {
   SubSubClass({
     this.value,
   });

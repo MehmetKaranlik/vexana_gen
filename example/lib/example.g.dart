@@ -29,7 +29,7 @@ mixin _$MainClassSerialized implements INetworkModel<MainClass> {
       'name': name,
       'age': age,
       'score': score,
-      'subClass': subClass,
+      'subClass': subClass.toJson(),
     };
   }
 }

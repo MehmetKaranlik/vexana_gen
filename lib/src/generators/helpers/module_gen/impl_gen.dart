@@ -57,22 +57,6 @@ class ImplGen {
     buffer.writeln("  }");
   }
 
-  void _genToJson() {
-    buffer.writeln("  Map<String, dynamic> toJson() {");
-    buffer.writeln("    return <String, dynamic>{");
-    for (final field in _fields.values) {
-      String declaration = "";
-      if (field.isVexanaClass) {
-        declaration = "${field.element.name}?.toJson()";
-      } else {
-        declaration = field.element.name;
-      }
-      buffer.writeln("      '${field.element.name}': $declaration,");
-    }
-    buffer.writeln("    };");
-    buffer.writeln("  }");
-  }
-
   void _genClassEnd() {
     buffer.writeln("}");
   }

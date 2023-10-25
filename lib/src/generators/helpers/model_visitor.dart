@@ -73,4 +73,7 @@ class VisitEntry {
 
   @override
   String toString() => 'Class : $type entry';
+
+  @override
+  int get hashCode => type.hashCode;
 }

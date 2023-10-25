@@ -24,7 +24,7 @@ mixin _$SubClassSerialized implements INetworkModel<SubClass> {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
-      'surname': surname,
+      'surname': surname?.toJson(),
     };
   }
 }

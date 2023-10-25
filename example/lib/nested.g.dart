@@ -21,7 +21,7 @@ mixin _$NestedSerialized implements INetworkModel<Nested> {
   @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'id': id,
+      'id': id?.toJson(),
     };
   }
 }
